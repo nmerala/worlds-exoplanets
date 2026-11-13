@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WORLDS · Every planet we've found beyond our Sun</title>
+  <meta name="description" content="A cinematic, narrated tour of every exoplanet in NASA's archive. Built with Tableau and Claude." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="WORLDS · Every planet we've found beyond our Sun" />
+  <meta property="og:description" content="A cinematic, narrated tour of every exoplanet in NASA's archive. Built with Tableau and Claude." />
+  <meta property="og:image" content="https://nmerala.github.io/worlds-exoplanets/og.png" />
+  <meta property="og:url" content="https://nmerala.github.io/worlds-exoplanets/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="src/styles.css" />
+  <script src="src/tableau.extensions.1.latest.js"></script>
+</head>
+<body>
+  <a class="skip" href="#find">Skip to search</a>
+
+  <header class="bar" role="banner">
+    <div class="wordmark" aria-label="Worlds">WORLDS</div>
+    <nav class="toc" aria-label="Chapters">
+      <a href="#built" data-ch="built"><span>01</span> Built with Tableau</a>
+      <a href="#sky" data-ch="sky"><span>02</span> The Sky</a>
+      <a href="#story" data-ch="story"><span>03</span> Discovery</a>
+      <a href="#near" data-ch="near"><span>04</span> Neighbors</a>
+      <a href="#zoo" data-ch="zoo"><span>05</span> Zoo</a>
+      <a href="#found" data-ch="found"><span>06</span> Found</a>
+      <a href="#find-world" data-ch="find-world"><span>07</span> Find</a>
+      <a href="#born" data-ch="born"><span>08</span> Born</a>
+      <a href="#far" data-ch="far"><span>09</span> How far</a>
+      <a href="#missions" data-ch="missions"><span>10</span> Missions</a>
+      <a href="#end" data-ch="end"><span>∞</span> Still looking</a>
+    </nav>
+    <button id="theme" class="theme" type="button" aria-pressed="false" aria-label="Switch to light mode">
+      <span class="theme-ico" aria-hidden="true">☾</span><span class="theme-txt">Night</span>
+    </button>
+  </header>
+
+  <main id="main">
+    <!-- 01 BUILT WITH TABLEAU -->
+    <section id="built" class="chapter intro" aria-labelledby="built-title">
+      <p class="eyebrow">Chapter 01 · Built with Tableau</p>
+      <h2 id="built-title">Every planet we’ve found<br /><em>beyond our Sun.</em></h2>
+      <p class="lede"><span id="builtCount" class="num">—</span> worlds from the NASA Exoplanet Archive, read live from a Tableau data source and drawn by a Tableau Data App. Scroll, or jump straight to the discovery story.</p>
+      <div class="intro-actions"><a class="btn" href="#story">Start with the discovery story</a><a class="btn ghost" href="#sky">See the whole sky</a></div>
+    </section>
+
+    <!-- 02 THE SKY -->
+    <section id="sky" class="chapter sky" aria-labelledby="sky-title">
+      <canvas id="skyCanvas" class="sky-canvas" role="img" aria-label="All known exoplanets plotted where their stars sit in our sky"></canvas>
+
+      <div class="sky-copy">
+        <p class="eyebrow">Chapter 02 · The Sky</p>
+        <h1 id="sky-title"><span id="heroCount" class="num">—</span> worlds.<br /><em>One sky.</em></h1>
+        <p class="lede">Every point of light is a planet beyond our solar system, placed where its star sits in our night sky.</p>
+
+        <div class="ask" role="group" aria-label="Ask the sky a question">
+          <p class="ask-label">Ask the sky</p>
+          <div id="chips" class="chips"></div>
+          <p id="askResult" class="ask-result" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <aside class="legend" aria-label="How to read the sky">
+        <div class="legend-row">
+          <span class="lg-sizes" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i></span>
+          <span>Size of dot = size of planet</span>
+        </div>
+        <div class="legend-row">
+          <span class="lg-ramp" aria-hidden="true"></span>
+          <span>Color = how hot <small>(cool → scorching)</small></span>
+        </div>
+        <div class="legend-row"><span class="lg-none" aria-hidden="true"></span><span>Temperature not measured</span></div>
+        <p class="legend-note">We look out from Earth, so position here is direction only, not distance. The soft band is our Milky Way.</p>
+      </aside>
+
+      <div class="finder" id="find">
+        <label for="search" class="sr-only">Find a world by name</label>
+        <div class="search-wrap">
+          <input id="search" type="search" placeholder="Find a world…" autocomplete="off"
+                 role="combobox" aria-expanded="false" aria-controls="suggest" aria-autocomplete="list" />
+          <ul id="suggest" class="suggest" role="listbox" hidden></ul>
+        </div>
+        <button id="surprise" class="btn ghost" type="button">Surprise me</button>
+        <div class="notable">
+          <p class="notable-title" id="notableTitle">Closest in this view</p>
+          <ul id="notable" class="notable-list" aria-labelledby="notableTitle"></ul>
+        </div>
+      </div>
+
+      <div id="tip" class="tip" role="tooltip" hidden></div>
+    </section>
+
+    <!-- 02 THE DISCOVERY STORY -->
+    <section id="story" class="chapter story" aria-labelledby="story-title">
+      <div class="story-head">
+        <p class="eyebrow">Chapter 03 · The Discovery Story</p>
+        <h2 id="story-title">In <span id="storyStart">1991</span>, we hadn’t confirmed <em>a single</em> planet around another star.</h2>
+      </div>
+
+      <div class="stage">
+        <canvas id="storyCanvas" class="story-canvas" role="img" aria-label="Sky filling with planets year by year"></canvas>
+
+        <div class="readout" aria-live="off">
+          <div class="year num" id="storyYear">1992</div>
+          <div class="known"><span class="num" id="storyCount">0</span> <span>worlds known</span></div>
+        </div>
+
+        <article id="caption" class="caption" aria-live="polite"></article>
+      </div>
+
+      <div class="timeline">
+        <button id="play" class="btn play" type="button" aria-label="Play the discovery story">
+          <span class="play-ico" aria-hidden="true">▶</span><span class="play-txt">Play</span>
+        </button>
+        <button id="speed" class="btn ghost speed" type="button" aria-label="Change story pace">Pace: steady</button>
+        <button id="narrate" class="btn ghost speed" type="button" aria-pressed="true">Narration: on</button>
+        <div class="scrub">
+          <canvas id="ribbon" class="ribbon" aria-hidden="true"></canvas>
+          <label for="yearRange" class="sr-only">Year</label>
+          <input id="yearRange" type="range" min="1992" max="2026" step="1" value="1992" />
+          <div id="milestones" class="milestones" role="group" aria-label="Jump to a milestone"></div>
+        </div>
+      </div>
+      <div class="ribbon-key" id="ribbonKey" aria-label="How each year's worlds were found"></div>
+    </section>
+
+    <!-- 05 NEIGHBORS -->
+    <section id="near" class="chapter near" aria-labelledby="near-title">
+      <div class="near-copy">
+        <p class="eyebrow">Chapter 04 · Neighbors</p>
+        <h2 id="near-title">Earth is the <em>anchor</em>.<br />Everything else is a long way off.</h2>
+        <p class="lede">Now the sky is flipped into distance. We’re at the center. Each ring is ten times farther than the last.</p>
+        <div class="ask" role="group" aria-label="What does Earth-ish mean?">
+          <p class="ask-label">“Earth-ish” can mean…</p>
+          <div id="nearChips" class="chips"></div>
+          <p id="nearResult" class="ask-result" aria-live="polite"></p>
+        </div>
+        <ul id="nearList" class="notable-list near-list" aria-label="Closest matches"></ul>
+        <p class="fine">Similar to Earth in a measurement is not the same as Earth-like. We can’t tell what these worlds are like to stand on.</p>
+      </div>
+      <canvas id="nearCanvas" class="near-canvas" role="img" aria-label="All known exoplanets arranged by distance from Earth, Earth at the center"></canvas>
+    </section>
+
+    <!-- 04 PLANET ZOO -->
+    <section id="zoo" class="chapter zoo" aria-labelledby="zoo-title">
+      <p class="eyebrow">Chapter 05 · Planet Zoo</p>
+      <h2 id="zoo-title">There is no <em>normal</em> planet.</h2>
+      <p class="lede">Our Solar System has no hot Jupiters, no super-Earths and no lava worlds, yet the galaxy is full of them. Each box is a rough group we made up from size, heat and orbit. Every dot is a real planet, colored by temperature and sized by width.</p>
+      <div id="zooGrid" class="zoo-grid"></div>
+      <p class="fine">Groups are our own simple rules, not official categories. Some planets fit more than one; each is counted once, top to bottom.</p>
+    </section>
+
+    <!-- 05 HOW WE FOUND THEM -->
+    <section id="found" class="chapter found" aria-labelledby="found-title">
+      <p class="eyebrow">Chapter 06 · How We Found Them</p>
+      <h2 id="found-title">What exists is one thing.<br /><em>What our instruments can find</em> is another.</h2>
+      <p class="lede">Follow the flow: how a planet was spotted, by which telescope or survey, and how big it turned out to be. Hover a path to trace it.</p>
+      <div id="foundChart" class="found-chart" role="img" aria-label="Flow diagram from discovery method to facility to planet size group"></div>
+      <div id="foundNotes" class="found-notes"></div>
+    </section>
+
+    <!-- 06 FIND ME A WORLD -->
+    <section id="find-world" class="chapter findme" aria-labelledby="findme-title">
+      <p class="eyebrow">Chapter 07 · Find Me a World</p>
+      <h2 id="findme-title">Build a planet.<br /><em>See who’s out there.</em></h2>
+      <p class="lede">Pick what you want. We’ll count the real worlds that match.</p>
+      <div class="findme-grid">
+        <div id="fmGroups" class="fm-groups"></div>
+        <div class="fm-result">
+          <p id="fmCount" class="fm-count" aria-live="polite"></p>
+          <p id="fmSay" class="fm-say"></p>
+          <ul id="fmList" class="notable-list near-list" aria-label="Closest matches"></ul>
+          <div class="fm-actions"><button id="fmRandom" class="btn" type="button">Meet a random match</button><button id="fmReset" class="btn ghost" type="button">Reset</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 WHEN YOU WERE BORN -->
+    <section id="born" class="chapter born" aria-labelledby="born-title">
+      <p class="eyebrow">Chapter 08 · The Universe When You Were Born</p>
+      <h2 id="born-title">What did we know <em>the year you arrived?</em></h2>
+      <div class="born-pick">
+        <label for="bornYear">Your birth year</label>
+        <input id="bornYear" type="range" min="1930" max="2026" step="1" value="1990" />
+        <output id="bornOut" class="num born-out" for="bornYear">1990</output>
+      </div>
+      <div id="bornCards" class="born-cards" aria-live="polite"></div>
+      <p class="fine">Light travels one light-year in a year. A star 36 light-years away shows us light that left it 36 years ago. Distances are rounded.</p>
+    </section>
+
+    <!-- 09 HOW FAR IS FAR -->
+    <section id="far" class="chapter far" aria-labelledby="far-title">
+      <p class="eyebrow">Chapter 09 · How Far Is Far</p>
+      <h2 id="far-title">These numbers are too big <em>to feel.</em><br />So let’s shrink them.</h2>
+      <p class="lede">If the distance from Earth to the Sun were one step, how far would you walk to reach each of these?</p>
+      <div id="farSteps" class="far-steps"></div>
+      <p class="fine">One “step” here is one astronomical unit, the Earth–Sun distance. A light-year is about 63,000 of them. Distances are rounded.</p>
+    </section>
+
+    <!-- 10 MISSION FINGERPRINTS -->
+    <section id="missions" class="chapter missions" aria-labelledby="missions-title">
+      <p class="eyebrow">Chapter 10 · Mission Fingerprints</p>
+      <h2 id="missions-title">Every telescope leaves <em>a fingerprint</em> on the sky.</h2>
+      <p class="lede">Same sky, two very different strategies. Toggle between them and watch where the planets light up.</p>
+      <div class="mission-toggle chips" role="group" aria-label="Choose a mission">
+        <button type="button" class="chip" data-m="kepler" aria-pressed="true">Kepler (2009–2018)</button>
+        <button type="button" class="chip" data-m="tess" aria-pressed="false">TESS (2018–)</button>
+        <button type="button" class="chip" data-m="both" aria-pressed="false">Both</button>
+      </div>
+      <div class="mission-stage">
+        <canvas id="missionCanvas" class="mission-canvas" role="img" aria-label="Sky map showing where Kepler and TESS found planets"></canvas>
+        <div id="missionSay" class="mission-say" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- ENDING -->
+    <section id="end" class="chapter end" aria-labelledby="end-title">
+      <canvas id="endCanvas" class="end-canvas" aria-hidden="true"></canvas>
+      <div class="end-copy">
+        <h2 id="end-title"><span id="endCount" class="num">—</span> worlds found.</h2>
+        <p class="end-line">And we've barely started looking.</p>
+        <div class="remix" aria-labelledby="remix-title">
+          <p class="remix-eyebrow" id="remix-title">Remix this universe</p>
+          <p class="remix-lede">The data behind every chapter is one Tableau data source, <b>Worlds - NASA Exoplanets</b>. Make it yours. Try asking for:</p>
+          <ul class="remix-ideas">
+            <li>“A planet trading card for any world I pick.”</li>
+            <li>“The sky on the night I was born, with the planets we knew then.”</li>
+            <li>“A race chart of which telescope found the most planets each year.”</li>
+          </ul>
+          <div class="remix-actions"><a class="btn" href="#story">Replay the discovery story</a><a class="btn ghost" href="#built">Back to the top</a></div>
+        </div>
+        <p class="built">Built with Tableau.</p>
+        <p class="fine">This public copy runs on a snapshot of the NASA Exoplanet Archive (13 Nov 2026). The Tableau Data App version reads the same data live. Data: NASA Exoplanet Archive, public domain.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 09 ONE WORLD -->
+  <div id="world" class="world" role="dialog" aria-modal="true" aria-labelledby="wName" hidden>
+    <div class="world-scrim" data-close></div>
+    <div class="world-panel" tabindex="-1">
+      <button class="world-close" type="button" data-close aria-label="Close">✕</button>
+      <div class="world-visual">
+        <canvas id="worldCanvas" aria-hidden="true"></canvas>
+        <p class="world-scale" id="wScale"></p>
+      </div>
+      <div class="world-body">
+        <p class="eyebrow">One world</p>
+        <h2 id="wName" class="world-name"></h2>
+        <p id="wHost" class="world-host"></p>
+        <dl id="wFacts" class="facts"></dl>
+        <p id="wLight" class="world-light"></p>
+        <div class="world-nav">
+          <button id="wPrev" class="btn ghost" type="button">← Sibling</button>
+          <button id="wNext" class="btn ghost" type="button">Sibling →</button>
+          <button id="wRandom" class="btn ghost" type="button">Another world</button>
+        </div>
+        <p class="world-close-line" id="wClose"></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="status" class="status" role="status">Loading the sky…</div>
+
+  <script src="src/libs/d3.min.js"></script>
+  <script src="src/libs/echarts.min.js"></script>
+  <script src="src/narration.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
